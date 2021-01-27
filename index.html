@@ -56,19 +56,20 @@
                 </div>
                 <div class="col-md-5 center-item">
                   <div class="input-group number-spinner">
-                    <button class="btn btn-default">
+                    <button id="second-item-remove" class="btn btn-default">
                       <i class="fas fa-minus"></i>
                     </button>
                     <input
+                      id="second-item-quantity"
                       type="text"
                       class="form-control text-center"
                       value="1"
                     />
-                    <button class="btn btn-default">
+                    <button id="second-item-add" class="btn btn-default">
                       <i class="fas fa-plus"></i>
                     </button>
                   </div>
-                  <h5>$59</h5>
+                  <h5>$<span id="second-item-price">59</span></h5>
                   <img src="images/remove.png" alt="" class="remove-item" />
                 </div>
               </div>
@@ -102,6 +103,10 @@
       const firstItemAddBtn = document.getElementById('first-item-add');
       const firstItemDelBtn = document.getElementById('first-item-remove');
       const firstItemInitialPrice = 1219;
+      const secondItemAddBtn = document.getElementById('second-item-add');
+      const secondItemDelBtn = document.getElementById('second-item-remove');
+      const secondItemInitialPrice = 59;
+      ///First Item
       firstItemAddBtn.addEventListener('click', function () {
         //first item add
         const firstItemQuantity = document.getElementById('first-item-quantity')
@@ -116,20 +121,7 @@
         document.getElementById(
           'first-item-price'
         ).innerText = firstItemTotalPrice;
-
-        //update sub total
-        const firstItemTotal = document.getElementById('first-item-price')
-          .innerText;
-        document.getElementById('sub-total').innerText = firstItemTotal;
-
-        //tax
-        const subTotal = document.getElementById('sub-total').innerText;
-        const tax = Math.round((parseFloat(subTotal) * 2) / 100);
-        document.getElementById('tax').innerText = tax;
-
-        //total
-        const total = parseFloat(subTotal) - parseFloat(tax);
-        document.getElementById('total').innerText = total;
+        calculateAndSetTotalSection();
       });
       firstItemDelBtn.addEventListener('click', function () {
         //first item add
@@ -145,11 +137,56 @@
         document.getElementById(
           'first-item-price'
         ).innerText = firstItemTotalPrice;
+        calculateAndSetTotalSection();
+      });
+      ///Second Item
+      secondItemAddBtn.addEventListener('click', function () {
+        //first item add
+        const firstItemQuantity = document.getElementById(
+          'second-item-quantity'
+        ).value;
+        const firstItemNumber = parseInt(firstItemQuantity) + 1;
+        document.getElementById('second-item-quantity').value = firstItemNumber;
+        // first item total price
+        const firstItemPrice = document.getElementById('second-item-price')
+          .innerText;
+        const firstItemTotalPrice =
+          parseFloat(firstItemPrice) + secondItemInitialPrice;
+        document.getElementById(
+          'second-item-price'
+        ).innerText = firstItemTotalPrice;
+        calculateAndSetTotalSection();
+      });
+      secondItemDelBtn.addEventListener('click', function () {
+        //first item add
+        const firstItemQuantity = document.getElementById(
+          'second-item-quantity'
+        ).value;
+        const firstItemNumber = parseInt(firstItemQuantity) - 1;
+        document.getElementById('second-item-quantity').value = firstItemNumber;
+        // first item total price
+        const firstItemPrice = document.getElementById('second-item-price')
+          .innerText;
+        const firstItemTotalPrice =
+          parseFloat(firstItemPrice) - secondItemInitialPrice;
+        document.getElementById(
+          'second-item-price'
+        ).innerText = firstItemTotalPrice;
+        calculateAndSetTotalSection();
+      });
 
+      //Calculate function
+      function calculateAndSetTotalSection() {
         //update sub total
+
         const firstItemTotal = document.getElementById('first-item-price')
           .innerText;
-        document.getElementById('sub-total').innerText = firstItemTotal;
+        console.log(firstItemTotal);
+        const secondItemTotal = document.getElementById('second-item-price')
+          .innerText;
+        console.log(secondItemTotal);
+        document.getElementById('sub-total').innerText =
+          parseFloat(firstItemTotal) + parseFloat(secondItemTotal);
 
         //tax
         const subTotal = document.getElementById('sub-total').innerText;
@@ -157,9 +194,10 @@
         document.getElementById('tax').innerText = tax;
 
         //total
-        const total = parseFloat(subTotal) - parseFloat(tax);
+        const total = parseFloat(subTotal) + parseFloat(tax);
         document.getElementById('total').innerText = total;
-      });
+      }
+      //the minimum TDS rates is 2% up to BDT 25 lakh
     </script>
   </body>
 </html>
